@@ -2,6 +2,9 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+
+const userRoutes = require('./routes/userRoutes');
+
 var app = express();
 
 
@@ -21,5 +24,7 @@ app.use((req, res, next) => {
 
   next();
 });
+
+app.use('/users',userRoutes);
 
 module.exports = app;
