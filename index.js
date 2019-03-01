@@ -2,13 +2,14 @@
 
 const mongoose = require('mongoose');
 const app = require('./app');
+const config = require('./config/config').get(process.env.NODE_ENV == undefined ? "dev" : process.env.NODE_ENV);
 
-const port = 3000;
+
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/cafeteria',{ useNewUrlParser: true }).then(()=>{
-    console.log('Iniciando conexión con base de datos');
-    app.listen(port,()=>{
-        console.log('Conexión realizada');
+mongoose.connect(config.localdbURL,{ useNewUrlParser: true }).then(()=>{
+    console.log(config.startingProcessMSJ);
+    app.listen(config.port,()=>{
+        console.log(config.startedProcessMSJ);
     });
 }).catch(err => console.log(err));
