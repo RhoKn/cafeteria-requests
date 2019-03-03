@@ -4,7 +4,7 @@ const usersController = require('../controllers/usersController');
 var api = express.Router();
 
 api.get('/',usersController.list);
-api.get('/all',usersController.listAll);
+api.get('/all/:page?/:order?',usersController.listAll);
 api.get('/view/:id',usersController.viewUser);
 api.post('/register',usersController.registerUser);
 api.post('/login',usersController.loginUser);

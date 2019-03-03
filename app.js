@@ -14,6 +14,8 @@ app.get('/', function(req, res) {
   res.send('Hello');
 });
 
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
 
 
 // cabeceras http

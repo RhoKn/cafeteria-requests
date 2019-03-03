@@ -4,13 +4,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-    user_type   :   String,
-    name        :   String,
-    last_name   :   String,
-    user_name   :   String,
-    password    :   String,
-    email       :   String,
-    image       :   String
+    user_type           :   String,
+    first_name          :   String,
+    last_name           :   String,
+    nick_name           :   String,
+    password            :   String,
+    email               :   String,
+    registration_Date   :   String,
+    image               :   String
 });
 
 userSchema.methods.fullName = function(){
