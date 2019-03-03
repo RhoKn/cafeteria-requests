@@ -2,6 +2,10 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+
+const userRoutes = require('./routes/userRoutes');
+const productRoutes = require('./routes/productRoutes');
+
 var app = express();
 
 
@@ -10,6 +14,8 @@ app.get('/', function(req, res) {
   res.send('Hello');
 });
 
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
 
 
 // cabeceras http
@@ -21,5 +27,8 @@ app.use((req, res, next) => {
 
   next();
 });
+
+app.use('/users',userRoutes);
+app.use('/products',productRoutes);
 
 module.exports = app;
