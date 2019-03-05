@@ -1,6 +1,6 @@
 const express = require('express');
 const usersController = require('../controllers/usersController');
-
+const midlwrAuth = require('../middlewares/authentication');
 var api = express.Router();
 
 api.get('/',usersController.list);

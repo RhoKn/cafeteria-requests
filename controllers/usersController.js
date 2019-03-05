@@ -3,6 +3,7 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt-nodejs');
 const moment = require('moment');
+const jwt = require('../services/jwt');
 
 function list (req, res) {
     res.send('Hello');
@@ -14,7 +15,7 @@ function listAll (req, res) {
     order != 'user_type' ? 
                 order != 'first_name' ? 
                     order != 'last_name' ? 
-                        'last_name' 
+                        'registration_Date' 
                         : order 
                 : order 
              : order;
@@ -54,7 +55,7 @@ function registerUser (req, res) {
             email       :  userParams.email,
             image       :  null
         });
-        new_user.registration_Date = new Date(moment().unix());
+        new_user.registration_Date = moment().format('MMMM Do YYYY, h:mm:ss a');
         User.find({
             $or: [
                 {nick_name  : new_user.user_name},
@@ -91,6 +92,13 @@ function loginUser (req, res) {
             bcrypt.compare(userToLogin.password, user.password,(err, areEqual)=>{
                 if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
                 if(!areEqual) return res.status(404).send({message: 'Contraseña incorrecta'});
+
+                if(userToLogin.getToken){
+                    return res.status(200).send({
+                    message :   'Token del usuario',
+                    token    :   jwt.createToken(user)
+                    });
+                }
                 user.password = undefined;
                 return res.status(200).send({
                     message :   'Usuario loggeado',
