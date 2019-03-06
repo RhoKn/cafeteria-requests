@@ -22,7 +22,7 @@ function listAll(req, res) {
         });
     });
 }
-function viewUser(req, res) {
+function viewProvider(req, res) {
     const providerToView = req.params.id;
     Provider.findById(providerToView,(err,provider)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
@@ -104,7 +104,7 @@ function deleteProvider(req, res) {
 
 
 module.exports = {
-    listAll, viewUser,
+    listAll, viewProvider,
     createProvider,
     updateProvider, deleteProvider
 }

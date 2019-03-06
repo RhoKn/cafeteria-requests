@@ -3,7 +3,10 @@ const Schema = mongoose.Schema;
 
 var productSchema = new Schema({
     name        :   String,
-    description :   String
+    unit        :   {type: Schema.ObjectId, ref: 'Unit'},
+    category    :   String,
+    description :   String,
+    price       :   Number
 });
 
 //productSchema.methods.name = function(){}
