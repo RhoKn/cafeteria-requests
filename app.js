@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 
+const unitRoutes = require('./routes/unitRoutes');
+
 var app = express();
 
 
@@ -30,5 +32,7 @@ app.use((req, res, next) => {
 
 app.use('/users',userRoutes);
 app.use('/products',productRoutes);
+
+app.use('/units',unitRoutes);
 
 module.exports = app;
