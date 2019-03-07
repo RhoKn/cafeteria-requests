@@ -31,10 +31,9 @@ function viewUnit (req, res) {
 }
 function createUnit (req, res) {
     let unitParams = req.body;
-    if(unitParams.name && unitParams.units){
+    if(unitParams.name){
         let newUnit = new Unit({
-            name   :    unitParams.name,
-            units  :    unitParams.units
+            name   :    unitParams.name
         });
         Unit.find({name  : newUnit.name}).exec((err, foundedUnits) => {
             if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
