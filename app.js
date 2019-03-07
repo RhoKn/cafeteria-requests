@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const providerRoutes = require('./routes/providerRoutes');
-
+const dinningRoomRoutes = require('./routes/dinning-roomRoutes');
 const unitRoutes = require('./routes/unitRoutes');
 
 var app = express();
@@ -34,6 +34,7 @@ app.use((req, res, next) => {
 app.use('/users',userRoutes);
 app.use('/products',productRoutes);
 app.use('/providers',providerRoutes);
+app.use('/dinningRooms',dinningRoomRoutes);
 
 app.use('/units',unitRoutes);
 
