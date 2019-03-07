@@ -3,8 +3,10 @@ const Schema = mongoose.Schema;
 
 var requestSchema = new Schema({
     dRoom       :   {type: Schema.ObjectId, ref: 'DRoom'},
-    products    :   [{type: Schema.ObjectId, ref: 'Product'}],
-    totalPrice  :   Number,
+    products    :   [{
+                        name    :   String,
+                        unit    :   String
+                    }],
     created_at  :   String,
     status      :   String
 });
