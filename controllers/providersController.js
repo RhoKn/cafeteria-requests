@@ -7,10 +7,10 @@ function listAll(req, res) {
     var page = req.params.page ? req.params.page : 1;
     const provs_per_page = 5;
     const order = req.params.order ? req.params.order : 'name';
-    order != 'contact_first_name' ? 
-                order != 'contact_last_name' ? 
+    order != 'contact_first_name' ?
+                order != 'contact_last_name' ?
                     'name'
-                : order 
+                : order
              : order;
     Provider.find().sort(order).paginate(page,provs_per_page,(err,providers,total)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
@@ -30,7 +30,7 @@ function viewProvider(req, res) {
         return res.status(200).send({
             message     :   'Usuario encontrado',
             provider    :   provider
-        });        
+        });
     });
 }
 function createProvider(req, res) {

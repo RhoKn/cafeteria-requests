@@ -12,12 +12,12 @@ function listAll (req, res) {
     var page = req.params.page ? req.params.page : 1;
     const usrs_per_page = 5;
     const order = req.params.order ? req.params.order : 'last_name';
-    order != 'user_type' ? 
-                order != 'first_name' ? 
-                    order != 'last_name' ? 
-                        'registration_Date' 
-                        : order 
-                : order 
+    order != 'user_type' ?
+                order != 'first_name' ?
+                    order != 'last_name' ?
+                        'registration_Date'
+                        : order
+                : order
              : order;
     User.find().sort(order).paginate(page,usrs_per_page,(err,users,total)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
@@ -40,7 +40,7 @@ function viewUser (req, res) {
         return res.status(200).send({
             message :   'Usuario encontrado',
             user    :   user
-        });        
+        });
     });
 
 }
@@ -86,10 +86,10 @@ function registerUser (req, res) {
 }
 function loginUser (req, res) {
     const userToLogin = req.body;
-    User.findOne({nick_name : userToLogin.nick_name},(err,user)=>{
+    User.findOne({nick_name : req.body.nick_name},(err,user)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
         if(user){
-            bcrypt.compare(userToLogin.password, user.password,(err, areEqual)=>{
+            bcrypt.compare(req.body.password, user.password,(err, areEqual)=>{
                 if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
                 if(!areEqual) return res.status(404).send({message: 'Contraseña incorrecta'});
 

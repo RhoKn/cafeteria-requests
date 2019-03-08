@@ -25,17 +25,17 @@ function viewDRoom (req,res){
         return res.status(200).send({
             message     :   'Comedor encontrado',
             droom       :   droom
-        });        
+        });
     });
 }
 function updateDRoom (req,res){
     const dRoomToUpdte = req.params.id;
     const updateInfo = req.body;
-    
+
     if(updateInfo.user && !mongoose.Types.ObjectId.isValid(updateInfo.user)){
-        return res.status(400).send({ message: 'Usuario inválido' }); 
+        return res.status(400).send({ message: 'Usuario inválido' });
     }
-            
+
     DRoom.findByIdAndUpdate(dRoomToUpdte,updateInfo,{new: true}, (err, updatedDRoom)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
         if(!updatedDRoom) return res.status(304).send({message: 'No se pudo actualizar el comedor'});
@@ -69,11 +69,11 @@ function createDRoom (req,res){
                         dRoom       : dRoom
                     });
                 });
-    
+
             });
         }else{
-            return res.status(400).send({ message: 'Usuario invalido' }); 
-        }  
+            return res.status(400).send({ message: 'Usuario invalido' });
+        }
     }else{
         return res.status(411).send({ message: 'Por favor complete todos los campos' });
     }
@@ -94,6 +94,6 @@ function deleteDRoom (req,res){
 
 
 module.exports = {
-    viewAll, viewDRoom, 
+    viewAll, viewDRoom,
     updateDRoom,createDRoom, deleteDRoom
 }
