@@ -51,14 +51,30 @@ function updateRequest (req,res){
 
 function createRequest (req,res){
     let reqParams = req.body;
-    if(reqParams.dRoom && reqParams.products){
+    console.log(reqParams)
+    if(reqParams.dRoom && reqParams.products && reqParams.user){
         if(mongoose.Types.ObjectId.isValid(reqParams.dRoom)){
             let newReq = new Request({
-                dRoom   :    reqParams.dRoom,
-                products   :    reqParams.products,
-                status   :    'creado'
+                dRoom           :   reqParams.dRoom,
+                products        :   reqParams.products,
+                status          :   'Creado',
+                created      :  {
+                                    date: moment().format('MMMM Do YYYY, h:mm:ss a'),
+                                    user: reqParams.user,
+                                },
+                authorized  :   {
+                                    date: 'N/A',
+                                    user: 'N/A',
+                                },
+                approved    :   {
+                                    date: 'N/A',
+                                    user: 'N/A',
+                                },
+                rejected    :   {
+                                    date: 'N/A',
+                                    user: 'N/A',
+                                }
             });
-            newReq.created_at = moment().format('MMMM Do YYYY, h:mm:ss a');
 
             Request.find({created_at  : newReq.created_at}).exec((err, foundedReq) => {
                 if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
@@ -98,8 +114,43 @@ function deleteRequest (req,res){
     });
 }
 
+function changeStatus (req, res) {
+    let reqToEdit = req.params.id;
+    let status = {};
+    
+    if(req.body.type == 'Authorization') {
+        status.authorized = {
+            date : moment().format('MMMM Do YYYY, h:mm:ss a'),
+            user : req.body.user
+        }
+        status.status = 'Autorizado';
+    }else if(req.body.type == 'Approved'){
+        status.approved = {
+            date : moment().format('MMMM Do YYYY, h:mm:ss a'),
+            user : req.body.user
+        }
+        status.status = 'Aprobado';
+    }else{
+        status.rejected = {
+            date : moment().format('MMMM Do YYYY, h:mm:ss a'),
+            user : req.body.user
+        }
+        status.status = 'Rechazado';
+    }
+    
+    Request.findByIdAndUpdate(reqToEdit,status,{new: true}, (err, updatedRequest)=>{
+        if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
+        if(!updatedRequest) return res.status(304).send({message: 'No se pudo actualizar el pedido'});
+        
+        return res.status(200).send({
+            message    :   'Pedido actualizado',
+            request    :   updatedRequest
+        });
+    });
+    
+}
 
 module.exports = {
-    viewAll, viewRequest, 
-    updateRequest,createRequest, deleteRequest
+    viewAll, viewRequest, updateRequest,
+    createRequest, deleteRequest, changeStatus
 }
