@@ -8,7 +8,7 @@ function viewAll (req,res){
     let page = req.params.page ? req.params.page : 1;
     const pdcts_per_page = 5;
     const order = req.params.order ? req.params.order : 'name';
-    Product.find().populate('unit').sort(order).paginate(page, pdcts_per_page, (err, products, total)=>{
+    Product.find().populate('category').populate('unit').sort(order).paginate(page, pdcts_per_page, (err, products, total)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
         return res.status(200).send({
             message     :   'Lista de productos',
@@ -50,12 +50,13 @@ function updateProduct (req,res){
 function createProduct (req,res){
     let productParams = req.body;
     if(productParams.name && productParams.unit && productParams.category && productParams.description && productParams.price){
-        if(mongoose.Types.ObjectId.isValid(productParams.unit)){
+        if(mongoose.Types.ObjectId.isValid(productParams.unit) && mongoose.Types.ObjectId.isValid(productParams.category)){
             let newProduct = new Product({
                 name        : productParams.name,
                 unit        : productParams.unit,
                 category    : productParams.category,
                 price       : productParams.price,
+                description : productParams.description
             });
             Product.find({name: newProduct.name}).exec((err, foundedProducts) => {
                 if (err) return res.status(500).send({ message: 'Hubo un error en la petición' });
@@ -74,7 +75,7 @@ function createProduct (req,res){
     
             });
         }else{
-            return res.status(400).send({ message: 'Unidad de medida inválida' }); 
+            return res.status(400).send({ message: 'Unidad de medida o tipo de producto inválido' }); 
         }  
     }else{
         return res.status(411).send({ message: 'Por favor complete todos los campos' });
