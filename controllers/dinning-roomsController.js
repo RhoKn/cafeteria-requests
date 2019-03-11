@@ -51,9 +51,14 @@ function createDRoom (req,res){
     if(dRoomParams.user && dRoomParams.dRoom && dRoomParams.description){
         if(mongoose.Types.ObjectId.isValid(dRoomParams.user)){
             let newDroom = new DRoom({
-                user           : dRoomParams.user,
-                dRoom          : dRoomParams.dRoom,
-                description    : dRoomParams.description
+                user           :    dRoomParams.user,
+                dRoom          :    dRoomParams.dRoom,
+                description    :    dRoomParams.description,
+                street         :    dRoomParams.street,
+                street_number  :    dRoomParams.street_number,
+                suite_number   :    dRoomParams.suite_number ? dRoomParams.suite_number : 'N/A',
+                colony         :    dRoomParams.colony,
+                postal_code    :    dRoomParams.postal_code
             });
             DRoom.find({name: newDroom.dRoom}).exec((err, foundedDRooms) => {
                 if (err) return res.status(500).send({ message: 'Hubo un error en la petición' });

@@ -9,6 +9,7 @@ const providerRoutes = require('./routes/providerRoutes');
 const dinningRoomRoutes = require('./routes/dinning-roomRoutes');
 const unitRoutes = require('./routes/unitRoutes');
 const requestRoutes = require('./routes/requestRoutes');
+const productTypeRoutes = require('./routes/productTypeRoutes');
 
 var app = express();
 
@@ -38,5 +39,7 @@ app.use('/providers',providerRoutes);
 app.use('/dinningRooms',dinningRoomRoutes);
 app.use('/requests',requestRoutes);
 app.use('/units',unitRoutes);
+app.use('/productTypes',productTypeRoutes);
+
 
 module.exports = app;

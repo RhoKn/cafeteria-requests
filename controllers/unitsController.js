@@ -31,9 +31,10 @@ function viewUnit (req, res) {
 }
 function createUnit (req, res) {
     let unitParams = req.body;
-    if(unitParams.name){
+    if(unitParams.name && unitParams.weigh){
         let newUnit = new Unit({
-            name   :    unitParams.name
+            name    :   unitParams.name,
+            weigh   :   unitParams.weigh
         });
         Unit.find({name  : newUnit.name}).exec((err, foundedUnits) => {
             if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
@@ -50,8 +51,6 @@ function createUnit (req, res) {
                     });
                 });
         });
-    }else{
-        return res.status(411).send({message: 'Por favor complete todos los campos'});
     }
 }
 function updateUnit (req, res) {
