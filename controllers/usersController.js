@@ -4,7 +4,7 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt-nodejs');
 const moment = require('moment');
 const jwt = require('../services/jwt');
-
+const jwt2=require('jsonwebtoken');
 function list (req, res) {
     res.send('Hello');
 }
@@ -86,24 +86,36 @@ function registerUser (req, res) {
 }
 function loginUser (req, res) {
     const userToLogin = req.body;
-    User.findOne({nick_name : req.body.nick_name},(err,user)=>{
+    User.findOne(
+      {
+        $or:[
+              {nick_name : req.body.nick_name},
+              {email:req.body.nick_name}
+        ]},(err,user)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
         if(user){
             bcrypt.compare(req.body.password, user.password,(err, areEqual)=>{
                 if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
-                if(!areEqual) return res.status(404).send({message: 'Contraseña incorrecta'});
+                if(!areEqual) return res.status(404).send({message: 'Hubo un error en la petición'});
 
-                if(userToLogin.getToken){
-                    return res.status(200).send({
-                    message :   'Token del usuario',
-                    token    :   jwt.createToken(user)
-                    });
-                }
-                user.password = undefined;
-                return res.status(200).send({
-                    message :   'Usuario loggeado',
-                    user    :   user
-                });
+
+                let payload={subject:user._id};
+                let token=jwt2.sign(payload,'secretKey');
+                let role=user.user_type;
+
+                res.status(200).send({token,role});
+
+                // if(userToLogin.getToken){
+                //     return res.status(200).send({
+                //     message :   'Token del usuario',
+                //     token    :   jwt.createToken(user)
+                //     });
+                // }
+                // user.password = undefined;
+                // return res.status(200).send({
+                //     message :   'Usuario loggeado',
+                //     user    :   user
+                // });
             });
         }else{
             return res.status(404).send({message: 'No existe el usuario'});
