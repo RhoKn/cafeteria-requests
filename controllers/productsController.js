@@ -26,17 +26,17 @@ function viewProduct (req,res){
         return res.status(200).send({
             message     :   'Producto encontrado',
             product     :   product
-        });        
+        });
     });
 }
 function updateProduct (req,res){
     const productToUpdate = req.params.id;
     const updateInfo = req.body;
-    
+
     if(updateInfo.unit && !mongoose.Types.ObjectId.isValid(updateInfo.unit)){
-        return res.status(400).send({ message: 'Unidad de medida inválida' }); 
+        return res.status(400).send({ message: 'Unidad de medida inválida' });
     }
-            
+
     Product.findByIdAndUpdate(productToUpdate,updateInfo,{new: true}, (err, updatedProduct)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
         if(!updatedProduct) return res.status(304).send({message: 'No se pudo actualizar el proveedor'});
@@ -49,12 +49,13 @@ function updateProduct (req,res){
 
 function createProduct (req,res){
     let productParams = req.body;
-    if(productParams.name && productParams.unit && productParams.category && productParams.description && productParams.price){
+    if(productParams.name && productParams.unit && productParams.category && productParams.provider && productParams.description && productParams.price){
         if(mongoose.Types.ObjectId.isValid(productParams.unit) && mongoose.Types.ObjectId.isValid(productParams.category)){
             let newProduct = new Product({
                 name        : productParams.name,
                 unit        : productParams.unit,
                 category    : productParams.category,
+                provider    : productParams.provider,
                 price       : productParams.price,
                 description : productParams.description
             });
@@ -72,11 +73,11 @@ function createProduct (req,res){
                         product     : product
                     });
                 });
-    
+
             });
         }else{
-            return res.status(400).send({ message: 'Unidad de medida o tipo de producto inválido' }); 
-        }  
+            return res.status(400).send({ message: 'Unidad de medida o tipo de producto inválido' });
+        }
     }else{
         return res.status(411).send({ message: 'Por favor complete todos los campos' });
     }
@@ -97,6 +98,6 @@ function deleteProduct (req,res){
 
 
 module.exports = {
-    viewAll, viewProduct, 
+    viewAll, viewProduct,
     updateProduct,createProduct, deleteProduct
 }

@@ -48,12 +48,13 @@ function updateDRoom (req,res){
 
 function createDRoom (req,res){
     let dRoomParams = req.body;
-    if(dRoomParams.user && dRoomParams.dRoom && dRoomParams.description){
+    console.log("asds"+dRoomParams);
+    if(dRoomParams.user && dRoomParams.dRoom && dRoomParams.observations){
         if(mongoose.Types.ObjectId.isValid(dRoomParams.user)){
             let newDroom = new DRoom({
                 user           :    dRoomParams.user,
                 dRoom          :    dRoomParams.dRoom,
-                description    :    dRoomParams.description,
+                observations   :    dRoomParams.observations,
                 street         :    dRoomParams.street,
                 street_number  :    dRoomParams.street_number,
                 suite_number   :    dRoomParams.suite_number ? dRoomParams.suite_number : 'N/A',

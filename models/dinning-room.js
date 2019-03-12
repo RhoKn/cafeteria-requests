@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 var dRoomSchema = new Schema({
     user            :   {type: Schema.ObjectId, ref: 'User'},
     dRoom           :   String,
-    description     :   String,
+    observations    :   String,
     street          :   String,
     street_number   :   Number,
     suite_number    :   String,
