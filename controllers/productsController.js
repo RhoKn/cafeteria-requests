@@ -33,9 +33,7 @@ function updateProduct (req,res){
     const productToUpdate = req.params.id;
     const updateInfo = req.body;
 
-    if(updateInfo.unit && !mongoose.Types.ObjectId.isValid(updateInfo.unit)){
-        return res.status(400).send({ message: 'Unidad de medida inválida' });
-    }
+    
 
     Product.findByIdAndUpdate(productToUpdate,updateInfo,{new: true}, (err, updatedProduct)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
@@ -50,7 +48,7 @@ function updateProduct (req,res){
 function createProduct (req,res){
     let productParams = req.body;
     if(productParams.name && productParams.unit && productParams.category && productParams.provider && productParams.description && productParams.price){
-        if(mongoose.Types.ObjectId.isValid(productParams.unit) && mongoose.Types.ObjectId.isValid(productParams.category)){
+        
             let newProduct = new Product({
                 name        : productParams.name,
                 unit        : productParams.unit,
@@ -60,7 +58,7 @@ function createProduct (req,res){
                 description : productParams.description
             });
             Product.find({name: newProduct.name}).exec((err, foundedProducts) => {
-                if (err) return res.status(500).send({ message: 'Hubo un error en la petición' });
+                if (err) return res.status(500).send({ message: 'Hubo un ssss en la petición', err : err});
                 if (foundedProducts && foundedProducts.length > 0) return res.status(302).send({ message: 'El producto ya se encuentra registrado' });
                 newProduct.save((err, product) => {
                     if (err) return res.status(500).send({ message: 'Hubo un error en la petición' });
@@ -75,9 +73,9 @@ function createProduct (req,res){
                 });
 
             });
-        }else{
-            return res.status(400).send({ message: 'Unidad de medida o tipo de producto inválido' });
-        }
+        
+        
+        
     }else{
         return res.status(411).send({ message: 'Por favor complete todos los campos' });
     }

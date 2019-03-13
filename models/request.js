@@ -3,9 +3,13 @@ const Schema = mongoose.Schema;
 
 var requestSchema = new Schema({
     dRoom           :   {type: Schema.ObjectId, ref: 'DRoom'},
+    observations    :   String,
+    AuthObservations    :   String,
     products        :   [{
                             name    :   String,
-                            unit    :   String
+                            unit    :   String,
+                            quantity:   String,
+                            provider:   {type: Schema.ObjectId, ref: 'Provider'}
                         }],
     created         :   {
                             date    :   String,

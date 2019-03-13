@@ -52,7 +52,7 @@ function updateRequest (req,res){
 function createRequest (req,res){
     let reqParams = req.body;
     console.log(reqParams)
-    if(reqParams.dRoom && reqParams.products && reqParams.user){
+    if(reqParams.dRoom && reqParams.products && reqParams.user && reqParams.observations){
         if(mongoose.Types.ObjectId.isValid(reqParams.dRoom)){
             let newReq = new Request({
                 dRoom           :   reqParams.dRoom,
@@ -73,12 +73,15 @@ function createRequest (req,res){
                 rejected    :   {
                                     date: 'N/A',
                                     user: 'N/A',
-                                }
+                                },
+                observations    :   reqParams.observations,
+                AuthObservations:   '',
+                created_at      :   moment().format('MMMM Do YYYY, h:mm:ss a')
             });
 
             Request.find({created_at  : newReq.created_at}).exec((err, foundedReq) => {
                 if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
-                if(foundedReq && foundedReq.length>0) return res.status(302).send({message: 'La unidad de medida ya se encuentra registrada'});
+                
                 newReq.save((err,requestAdded)=>{
                         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
                         if(!requestAdded) return res.status(201).send({
@@ -137,6 +140,8 @@ function changeStatus (req, res) {
         }
         status.status = 'Rechazado';
     }
+    
+    status.AuthObservations = req.body.AuthObservations;
     
     Request.findByIdAndUpdate(reqToEdit,status,{new: true}, (err, updatedRequest)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
