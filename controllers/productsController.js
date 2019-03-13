@@ -93,9 +93,21 @@ function deleteProduct (req,res){
         });
     });
 }
+function searchBy(req,res){
+    let theParam = req.params.param;
+    let theCriteria = req.params.criteria;
+    Product.find({[theParam]:theCriteria}).exec((err, foundedPrd) => {
+        if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
+        return res.status(200).send({
+            message     :   'Lista de productos',
+            products    :   foundedPrd,
+        });
+
+    });    
+}
 
 
 module.exports = {
-    viewAll, viewProduct,
+    viewAll, viewProduct,searchBy,
     updateProduct,createProduct, deleteProduct
 }
