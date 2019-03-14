@@ -25,7 +25,7 @@ function viewType (req,res){
         return res.status(200).send({
             message     :   'Tipo de producto encontrado',
             type     :   type
-        });        
+        });
     });
 }
 function updateType (req,res){
@@ -61,8 +61,8 @@ function createType (req,res){
                         type     : type
                     });
                 });
-    
-            });  
+
+            });
     }else{
         return res.status(411).send({ message: 'Por favor complete todos los campos' });
     }
@@ -83,6 +83,6 @@ function deleteType (req,res){
 
 
 module.exports = {
-    viewAll, viewType, 
+    viewAll, viewType,
     updateType,createType, deleteType
 }

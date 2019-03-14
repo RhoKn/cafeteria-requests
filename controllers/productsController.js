@@ -8,7 +8,7 @@ function viewAll (req,res){
     let page = req.params.page ? req.params.page : 1;
     const pdcts_per_page = 5;
     const order = req.params.order ? req.params.order : 'name';
-    Product.find().populate('category').populate('unit').sort(order).paginate(page, pdcts_per_page, (err, products, total)=>{
+    Product.find().populate('category').populate('unit').populate('provider').sort(order).paginate(page, pdcts_per_page, (err, products, total)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
         return res.status(200).send({
             message     :   'Lista de productos',
@@ -33,7 +33,7 @@ function updateProduct (req,res){
     const productToUpdate = req.params.id;
     const updateInfo = req.body;
 
-    
+
 
     Product.findByIdAndUpdate(productToUpdate,updateInfo,{new: true}, (err, updatedProduct)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
@@ -48,7 +48,7 @@ function updateProduct (req,res){
 function createProduct (req,res){
     let productParams = req.body;
     if(productParams.name && productParams.unit && productParams.category && productParams.provider && productParams.description && productParams.price){
-        
+
             let newProduct = new Product({
                 name        : productParams.name,
                 unit        : productParams.unit,
@@ -73,9 +73,9 @@ function createProduct (req,res){
                 });
 
             });
-        
-        
-        
+
+
+
     }else{
         return res.status(411).send({ message: 'Por favor complete todos los campos' });
     }
@@ -103,7 +103,7 @@ function searchBy(req,res){
             products    :   foundedPrd,
         });
 
-    });    
+    });
 }
 
 
