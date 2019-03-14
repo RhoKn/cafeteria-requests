@@ -8,7 +8,7 @@ const moment = require('moment');
 
 function viewAll (req,res){
     let page = req.params.page ? req.params.page : 1;
-    const request_per_page = 5;
+    const request_per_page =10;
     const order = req.params.order ? req.params.order : 'created_at';
     Request.find().sort(order).paginate(page, request_per_page, (err, requests, total)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
@@ -28,17 +28,17 @@ function viewRequest (req,res){
         return res.status(200).send({
             message     :   'Pedido encontrado',
             request     :   request
-        });        
+        });
     });
 }
 function updateRequest (req,res){
     const updateRequest = req.params.id;
     const updateInfo = req.body;
-    
+
     if(updateInfo.dRoom && !mongoose.Types.ObjectId.isValid(updateInfo.dRoom)){
-        return res.status(400).send({ message: 'Comedor inválido' }); 
+        return res.status(400).send({ message: 'Comedor inválido' });
     }
-            
+
     Request.findByIdAndUpdate(updateRequest,updateInfo,{new: true}, (err, updatedRequest)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
         if(!updatedRequest) return res.status(304).send({message: 'No se pudo actualizar el pedido'});
@@ -81,7 +81,7 @@ function createRequest (req,res){
 
             Request.find({created_at  : newReq.created_at}).exec((err, foundedReq) => {
                 if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
-                
+
                 newReq.save((err,requestAdded)=>{
                         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
                         if(!requestAdded) return res.status(201).send({
@@ -95,7 +95,7 @@ function createRequest (req,res){
                     });
             });
         }else{
-            return res.status(400).send({ message: 'Comedor invalido' }); 
+            return res.status(400).send({ message: 'Comedor invalido' });
         }
     }else{
         return res.status(411).send({message: 'Por favor complete todos los campos'});
@@ -120,7 +120,7 @@ function deleteRequest (req,res){
 function changeStatus (req, res) {
     let reqToEdit = req.params.id;
     let status = {};
-    
+
     if(req.body.type == 'Authorization') {
         status.authorized = {
             date : moment().format('MMMM Do YYYY, h:mm:ss a'),
@@ -140,19 +140,19 @@ function changeStatus (req, res) {
         }
         status.status = 'Rechazado';
     }
-    
+
     status.AuthObservations = req.body.AuthObservations;
-    
+
     Request.findByIdAndUpdate(reqToEdit,status,{new: true}, (err, updatedRequest)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
         if(!updatedRequest) return res.status(304).send({message: 'No se pudo actualizar el pedido'});
-        
+
         return res.status(200).send({
             message    :   'Pedido actualizado',
             request    :   updatedRequest
         });
     });
-    
+
 }
 
 module.exports = {

@@ -102,8 +102,9 @@ function loginUser (req, res) {
                 let payload={subject:user._id};
                 let token=jwt2.sign(payload,'secretKey');
                 let role=user.user_type;
+                let person=user.nick_name;
 
-                res.status(200).send({token,role});
+                res.status(200).send({token,role,person});
 
                 // if(userToLogin.getToken){
                 //     return res.status(200).send({
