@@ -10,7 +10,7 @@ function viewAll (req,res){
     let page = req.params.page ? req.params.page : 1;
     const request_per_page =10;
     const order = req.params.order ? req.params.order : 'created_at';
-    Request.find().sort(order).paginate(page, request_per_page, (err, requests, total)=>{
+    Request.find().sort(order).populate('dRoom').paginate(page, request_per_page, (err, requests, total)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
         return res.status(200).send({
             message     :   'Lista de pedidos',
