@@ -9,7 +9,8 @@ var requestSchema = new Schema({
                             name    :   String,
                             unit    :   String,
                             quantity:   String,
-                            provider:   {type: Schema.ObjectId, ref: 'Provider'}
+                            provider:   {type: Schema.ObjectId, ref: 'Provider'},
+                            category:   String
                         }],
     created         :   {
                             date    :   String,
