@@ -35,9 +35,10 @@ function updateRequest (req,res){
     const updateRequest = req.params.id;
     const updateInfo = req.body;
 
-    if(updateInfo.dRoom && !mongoose.Types.ObjectId.isValid(updateInfo.dRoom)){
+    if(updateInfo.dRoom && !mongoose.Types.ObjectId.isValid(updateInfo.dRoom._id)){
         return res.status(400).send({ message: 'Comedor inválido' });
     }
+    
 
     Request.findByIdAndUpdate(updateRequest,updateInfo,{new: true}, (err, updatedRequest)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
