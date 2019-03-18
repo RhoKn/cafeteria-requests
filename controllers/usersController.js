@@ -10,7 +10,7 @@ function list (req, res) {
 }
 function listAll (req, res) {
     var page = req.params.page ? req.params.page : 1;
-    const usrs_per_page = 5;
+    const usrs_per_page = 50;
     const order = req.params.order ? req.params.order : 'last_name';
     order != 'user_type' ?
                 order != 'first_name' ?
