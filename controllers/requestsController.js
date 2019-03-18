@@ -8,7 +8,7 @@ const moment = require('moment');
 
 function viewAll (req,res){
     let page = req.params.page ? req.params.page : 1;
-    const request_per_page =10;
+    const request_per_page =20;
     const order = req.params.order ? req.params.order : 'created_at';
     Request.find().sort(order).populate('dRoom').paginate(page, request_per_page, (err, requests, total)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
@@ -22,7 +22,7 @@ function viewAll (req,res){
 }
 function viewRequest (req,res){
     const requestToView = req.params.id;
-    Request.findById(requestToView).exec((err,request)=>{
+    Request.findById(requestToView).populate('dRoom').exec((err,request)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
         if(!request) return res.status(404).send({message: 'El pedido no existe'});
         return res.status(200).send({
