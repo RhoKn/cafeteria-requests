@@ -8,11 +8,7 @@ const moment = require('moment');
 
 function viewAll (req,res){
     let page = req.params.page ? req.params.page : 1;
-<<<<<<< HEAD
-    const request_per_page =20;
-=======
     const request_per_page =25;
->>>>>>> 4623a6615eecd6122ee935212f159a9dc9914258
     const order = req.params.order ? req.params.order : 'created_at';
     Request.find().sort(order).populate('dRoom').paginate(page, request_per_page, (err, requests, total)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
