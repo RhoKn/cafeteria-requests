@@ -7,7 +7,7 @@ function listAll (req, res) {
     const busses_per_page = 5;
     const order = req.params.order ? req.params.order : 'space_box';
 
-    Bus.find().sort(order).paginate(page,busses_per_page,(err,busses,total)=>{
+    Bus.find().populate('user').sort(order).paginate(page,busses_per_page,(err,busses,total)=>{
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
         return res.status(200).send({
             message :   'Lista de unidades de medida',
