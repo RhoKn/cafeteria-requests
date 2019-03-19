@@ -11,7 +11,7 @@ const unitRoutes = require('./routes/unitRoutes');
 const requestRoutes = require('./routes/requestRoutes');
 const productTypeRoutes = require('./routes/productTypeRoutes');
 const busRoutes=require('./routes/busRoutes');
-
+const deliveryRoutes=require('./routes/deliveryRoutes');
 
 var app = express();
 
@@ -44,7 +44,7 @@ app.use('/requests',requestRoutes);
 app.use('/units',unitRoutes);
 app.use('/productTypes',productTypeRoutes);
 app.use('/busses',busRoutes);
-
+app.use('/deliveries',deliveryRoutes);
 
 
 
