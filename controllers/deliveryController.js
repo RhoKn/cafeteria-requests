@@ -22,13 +22,13 @@ function viewAll (req,res){
 }
 function viewDelivery (req,res){
     const deliveryToView = req.params.id;
-    Delivery.findById(deliveryToView).populate('bus').exec((err,delivery)=>{
+    Delivery.findById(deliveryToView).populate('bus').populate('request').exec((err,delivery)=>{
       console.log(err);
         if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
         if(!delivery) return res.status(404).send({message: 'La salida no existe'});
         return res.status(200).send({
             message     :   'Pedido encontrado',
-            request     :   delivery
+            delivery     :   delivery
         });
     });
 }
@@ -46,7 +46,7 @@ function updateDelivery (req,res){
         if(!updatedDelivery) return res.status(304).send({message: 'No se pudo actualizar la salida'});
         return res.status(200).send({
             message         :   'Pedido actualizado',
-            request    :   updatedDelivery
+            delivery    :   updatedDelivery
         });
     });
 }
@@ -55,10 +55,10 @@ function createDelivery  (req,res){
     let reqParams = req.body;
     console.log(reqParams)
     if(reqParams.bus){
-        if(mongoose.Types.ObjectId.isValid(reqParams.request)){
+
             let newDel = new Delivery({
                 bus: reqParams.bus,
-                request:reqParams.request,
+                request:reqParams.requests,
                 status:reqParams.status,
                 delivery:reqParams.deliver,
                 readyFD:{
@@ -67,8 +67,8 @@ function createDelivery  (req,res){
                 }
             });
 
-            Delivery.find({request  : newDel.request}).exec((err, foundedDel) => {
-                if(err) return res.status(500).send({message: 'Hubo un error en la petición'});
+
+
 
                 newDel.save((err,deliveryAdded)=>{
                         if(err) return res.status(500).send({message: 'Hubo un error en la salida'});
@@ -81,10 +81,8 @@ function createDelivery  (req,res){
                             delivery    :   deliveryAdded
                         });
                     });
-            });
-        }else{
-           return res.status(400).send({ message: 'Comedor invalido' });
-        }
+
+
     }else{
         return res.status(411).send({message: 'Por favor complete todos los campos'});
     }
